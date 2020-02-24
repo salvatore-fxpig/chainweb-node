@@ -185,8 +185,8 @@ pInteger :: Integer -> PactValue
 pInteger = PLiteral . LInteger
 
 assertResultFail :: HasCallStack => String -> String -> Either String (TestResponse String) -> Assertion
-assertResultFail msg expectErr (Left e) = assertSatisfies msg e ((isInfixOf expectErr).show)
-assertResultFail msg _ (Right _) = assertFailure $ msg
+assertResultFail msg expectErr (Left e) = assertSatisfies msg e (isInfixOf expectErr.show)
+assertResultFail msg _ (Right _) = assertFailure msg
 
 checkResultSuccess :: HasCallStack => ([PactResult] -> Assertion) -> Either String (TestResponse String) -> Assertion
 checkResultSuccess _ (Left e) = assertFailure $ "Expected success, got: " ++ show e
@@ -198,7 +198,7 @@ checkPactResultSuccess msg (PactResult (Left e)) _ = assertFailure $ msg ++ ": e
 
 checkPactResultFailure :: HasCallStack => String -> PactResult -> String -> Assertion
 checkPactResultFailure msg (PactResult (Right pv)) _ = assertFailure $ msg ++ ": expected tx failure, got " ++ show pv
-checkPactResultFailure msg (PactResult (Left e)) expectErr = assertSatisfies msg e ((isInfixOf expectErr).show)
+checkPactResultFailure msg (PactResult (Left e)) expectErr = assertSatisfies msg e (isInfixOf expectErr . show)
 
 testTfrNoGasFails :: TxsTest
 testTfrNoGasFails = (txs,assertResultFail "Expected missing (GAS) failure" "Keyset failure")
