@@ -41,8 +41,12 @@ import Chainweb.Payload
 import Chainweb.Transaction
 
 
-newBlock :: Miner -> BlockHeader -> BlockCreationTime -> PactQueue ->
-            IO (MVar (Either PactException PayloadWithOutputs))
+newBlock
+    :: Miner
+    -> BlockHeader
+    -> BlockCreationTime
+    -> PactQueue
+    -> IO (MVar (Either PactException PayloadWithOutputs))
 newBlock mi bHeader creationTime reqQ = do
     !resultVar <- newEmptyMVar :: IO (MVar (Either PactException PayloadWithOutputs))
     let !msg = NewBlockMsg NewBlockReq
